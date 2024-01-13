@@ -1,8 +1,7 @@
-import { createEmptyField } from '../utils';
-import { STATUS, PLAYER } from '../constants';
+import { store } from '../store';
+import { restartGame } from '../actions';
 
-export const handleRestart = ({ setStatus, setCurrentPlayer, setField }) => {
-	setStatus(STATUS.TURN);
-	setCurrentPlayer(PLAYER.CROSS);
-	setField(createEmptyField());
+export const handleRestart = () => {
+	store.dispatch(restartGame());
+	// console.log(store.getState().field);
 };

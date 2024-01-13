@@ -1,29 +1,44 @@
+import { store } from '../store';
+import { currentField, currentStatus, newCurrentPlayer } from '../actions';
 import { checkWin, checkEmptyCell } from '../utils';
 import { STATUS, PLAYER } from '../constants';
 
-export const handleCellClick = (
-	{ status, field, currentPlayer, setField, setStatus, setCurrentPlayer },
-	cellIndex,
-) => {
+export const handleCellClick = (cellIndex) => {
 	if (
-		status === STATUS.WIN ||
-		status === STATUS.DRAW ||
-		field[cellIndex] !== PLAYER.NOBODY
+		store.getState().status === STATUS.WIN ||
+		store.getState().status === STATUS.DRAW ||
+		store.getState().field[cellIndex] !== PLAYER.NOBODY
 	) {
 		return;
 	}
 
-	const newField = [...field];
+	const newField = [...store.getState().field];
+	// console.log('newField', newField);
 
-	newField[cellIndex] = currentPlayer;
+	newField[cellIndex] = store.getState().currentPlayer;
+	// console.log('newField[cellIndex]:', newField[cellIndex]);
 
-	setField(newField);
+	store.dispatch(currentField(newField));
 
-	if (checkWin(newField, currentPlayer)) {
-		setStatus(STATUS.WIN);
+	// console.log('newField', newField);
+	// console.log('currentField', store.getState().field);
+
+	if (checkWin(newField, store.getState().currentPlayer)) {
+		// setStatus(STATUS.WIN);
+		store.dispatch(currentStatus(STATUS.WIN));
+		// console.log('currentStatus', store.getState().status);
 	} else if (checkEmptyCell(newField)) {
-		setCurrentPlayer(currentPlayer === PLAYER.CROSS ? PLAYER.NOUGHT : PLAYER.CROSS);
+		store.dispatch(
+			newCurrentPlayer(
+				store.getState().currentPlayer === PLAYER.CROSS
+					? PLAYER.NOUGHT
+					: PLAYER.CROSS,
+			),
+		);
+
+		// console.log('currentPlayer', store.getState().currentPlayer);
 	} else {
-		setStatus(STATUS.DRAW);
+		store.dispatch(currentStatus(STATUS.DRAW));
+		// console.log('currentStatus', store.getState().status);
 	}
 };
