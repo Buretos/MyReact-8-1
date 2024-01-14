@@ -1,4 +1,3 @@
-// import { createStore } from 'redux';
 import { appReducer } from './reducer';
 
 const createStore = (reducer) => {
@@ -24,13 +23,3 @@ const createStore = (reducer) => {
 export const store = createStore(appReducer);
 
 store.dispatch({});
-
-// пример использования прослушивателя изменений
-// const unsubscribe = store.subscribe(() => {
-// 	console.log('Изменение в хранилище');
-// });
-
-// // для отписки от прослушивания изменений
-// // unsubscribe();
-
-// unsubscribe();
